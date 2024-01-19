@@ -1,0 +1,33 @@
+# serverless.yml
+component: http # (必选) 组件名称
+name: gpts-bridge-web # 必选) 组件实例名称.
+
+
+inputs:
+  region: na-siliconvalley # 硅谷
+  src: # 部署src下的文件代码，并打包成zip上传到bucket上
+    src: ./ # 本地需要打包的文件目录
+    hook: npm run build
+    exclude: # 被排除的文件或目录
+      - .env
+      - .env.development
+      - .env.production
+      - 'node_modules/**'
+  faas: # 函数配置相关
+    framework: nextjs #选择框架，此处以 express 为例
+    runtime: Nodejs18.15
+    name: ${name} # 云函数名称
+    timeout: 10 # 超时时间，单位秒
+    memorySize: 512 # 内存大小，默认 512 MB
+    environments: #  环境变量
+      - key: API_HOST
+        value: http://127.0.0.1:3000
+    vpc: # 私有网络配置
+      vpcId: 'vpc-7baa8znh'
+      subnetId: 'subnet-dkom3q5g' # 子网ID
+
+  apigw: #  # http 组件会默认帮忙创建一个 API 网关服务
+    protocols:
+      - http
+      - https
+    environment: production

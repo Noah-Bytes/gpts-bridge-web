@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "engines": { "node": ">=18" },
   "dependencies": {
     "@ant-design/nextjs-registry": "^1.0.0",
     "antd": "^5.13.1",
